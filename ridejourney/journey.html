@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Bike Journey — AOI Signature Journeys</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --paper: #f5f2ed;
+      --stone: #e8e4dd;
+      --mist: #d4d0c8;
+      --slate: #6b6560;
+      --forest: #2c3e2d;
+      --forest-light: #3d5a3e;
+      --ridge: #4a3728;
+      --ridge-light: #6b5a3e;
+      --snow: #ffffff;
+      --accent: #c4956a;
+      --river: #4a6b7a;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); color: var(--ink); background: var(--paper); line-height: 1.7; font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; background: rgba(245,242,237,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.06); transition: all .4s ease; }
+    nav.scrolled { padding: 14px 40px; background: rgba(245,242,237,0.95); }
+    nav a.brand { font-size: 13px; letter-spacing: 1.5px; text-transform: lowercase; color: var(--slate); text-decoration: none; }
+    nav .nav-links { display: flex; gap: 28px; }
+    nav .nav-links a { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--slate); text-decoration: none; transition: color .3s; }
+    nav .nav-links a:hover { color: var(--ink); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 40px 80px; position: relative; overflow: hidden; background: var(--ridge); }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(44,55,40,0.1) 0%, rgba(44,55,40,0.35) 40%, rgba(26,26,26,0.88) 100%); z-index: 1; }
+    .hero-img { position: absolute; inset: 0; background-image: url('images/heroridej.jpg'); background-size: cover; background-position: center 40%; filter: saturate(0.85); background-color: #3a4a35; }
+    .hero-content { position: relative; z-index: 2; color: var(--snow); max-width: 900px; }
+    .hero-label { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; opacity: .7; margin-bottom: 20px; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(44px, 7.5vw, 88px); font-weight: 300; line-height: 1.02; margin-bottom: 24px; }
+    .hero h1 em { font-style: italic; font-weight: 400; }
+    .hero-sub { font-size: 17px; font-weight: 300; line-height: 1.75; max-width: 580px; opacity: .85; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 36px; margin-top: 44px; padding-top: 44px; border-top: 1px solid rgba(255,255,255,0.15); }
+    .hero-meta-item { display: flex; flex-direction: column; }
+    .hero-meta-item .label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: .5; margin-bottom: 4px; }
+    .hero-meta-item .value { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+
+    /* STATS BAND */
+    .stats-band { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--forest); border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .stat-item { background: var(--forest); padding: 48px 32px; text-align: center; color: var(--snow); }
+    .stat-number { font-family: var(--font-display); font-size: 44px; font-weight: 300; line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .6; line-height: 1.5; }
+
+    /* SECTIONS */
+    section { padding: 100px 40px; }
+    .section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--slate); margin-bottom: 16px; }
+    .section-title { font-family: var(--font-display); font-size: clamp(32px, 5vw, 52px); font-weight: 300; line-height: 1.15; margin-bottom: 28px; }
+    .section-body { font-size: 16px; font-weight: 300; color: var(--slate); max-width: 640px; line-height: 1.85; }
+
+    /* CHAPTERS */
+    .chapters { background: var(--snow); }
+    .chapter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 60px; width: 100%; }
+    .chapter-card { padding: 40px 36px; background: var(--paper); transition: background .3s; }
+    .chapter-card:hover { background: var(--stone); }
+    .chapter-num { font-family: var(--font-display); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .chapter-region { font-family: var(--font-display); font-size: 34px; font-weight: 400; margin-bottom: 4px; }
+    .chapter-kanji { font-family: var(--font-display); font-size: 24px; font-weight: 300; color: var(--mist); margin-bottom: 16px; }
+    .chapter-desc { font-size: 14px; font-weight: 300; color: var(--slate); line-height: 1.75; margin-bottom: 20px; }
+    .chapter-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chapter-tags span { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 12px; background: rgba(0,0,0,0.04); border-radius: 2px; color: var(--slate); }
+
+    /* ROUTE PROFILE */
+    .route-profile { background: var(--ridge); color: var(--snow); padding: 100px 40px; }
+    .route-profile .section-label { color: rgba(255,255,255,0.5); }
+    .route-profile .section-title { color: var(--snow); }
+    .route-profile .section-body { color: rgba(255,255,255,0.7); }
+    .route-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 40px; margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .route-item .route-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; opacity: .5; margin-bottom: 6px; }
+    .route-item .route-value { font-family: var(--font-display); font-size: 28px; font-weight: 400; margin-bottom: 4px; }
+    .route-item .route-note { font-size: 13px; opacity: .6; }
+
+    /* ROUTE SVG */
+    .route-svg-wrap { margin-top: 60px; background: rgba(255,255,255,0.04); border-radius: 4px; padding: 40px 24px 24px; overflow-x: auto; }
+
+    /* ITINERARY */
+    .itinerary { background: var(--snow); }
+    .day-list { margin-top: 60px; max-width: 900px; }
+    .day-item { display: grid; grid-template-columns: 140px 1fr; gap: 32px; padding: 40px 0; border-bottom: 1px solid var(--stone); }
+    .day-item:last-child { border-bottom: none; }
+    .day-num-col { }
+    .day-num { font-family: var(--font-display); font-size: 14px; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); position: sticky; top: 90px; }
+    .day-date { font-size: 12px; color: var(--mist); margin-top: 4px; }
+    .day-region { font-size: 11px; color: var(--mist); margin-top: 2px; letter-spacing: .5px; }
+    .day-title { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin-bottom: 12px; line-height: 1.3; }
+    .day-body { font-size: 15px; font-weight: 300; color: var(--slate); line-height: 1.85; margin-bottom: 16px; }
+    .day-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .day-tags span { font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; padding: 5px 12px; border-radius: 2px; color: var(--snow); }
+    .tag-city { background: var(--slate); }
+    .tag-transfer { background: var(--river); }
+    .tag-ride { background: var(--forest); }
+    .tag-culture { background: var(--accent); color: var(--ink); }
+    .tag-rest { background: var(--ridge); }
+    .tag-coast { background: #5a7a8a; }
+    .day-tech { margin-top: 16px; padding: 16px 20px; background: var(--paper); border-left: 3px solid var(--forest); border-radius: 0 4px 4px 0; }
+    .day-tech-row { display: flex; gap: 24px; flex-wrap: wrap; }
+    .day-tech-item { display: flex; flex-direction: column; }
+    .day-tech-item .tech-label { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--mist); margin-bottom: 2px; }
+    .day-tech-item .tech-value { font-size: 14px; font-weight: 500; color: var(--forest); }
+
+    /* IMG BREAK */
+    .img-break { height: 70vh; min-height: 400px; position: relative; overflow: hidden; }
+    .img-break-bg { position: absolute; inset: 0; background-size: cover; background-position: center; filter: saturate(0.85); }
+    .img-break-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,26,26,0) 0%, rgba(26,26,26,0.55) 100%); }
+    .img-break-caption { position: absolute; bottom: 32px; right: 40px; color: var(--snow); text-align: right; z-index: 2; }
+    .img-break-caption .cap-title { font-family: var(--font-display); font-size: 18px; font-weight: 400; }
+    .img-break-caption .cap-sub { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; opacity: .7; margin-top: 4px; }
+
+    /* PRICING */
+    .pricing { background: var(--paper); padding: 80px 40px; text-align: center; }
+    .price-main { font-family: var(--font-display); font-size: clamp(40px, 6vw, 64px); font-weight: 300; color: var(--ink); margin-bottom: 8px; }
+    .price-per { font-size: 14px; color: var(--slate); font-weight: 300; margin-bottom: 32px; }
+    .price-btn { display: inline-block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--snow); background: var(--forest); padding: 16px 48px; text-decoration: none; transition: all .3s; margin-bottom: 40px; }
+    .price-btn:hover { background: var(--forest-light); }
+    .price-details { display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .price-detail-item { text-align: center; }
+    .price-detail-item .pd-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--mist); margin-bottom: 4px; }
+    .price-detail-item .pd-value { font-size: 15px; font-weight: 500; color: var(--ink); }
+
+    /* INCLUDED */
+    .included { background: var(--snow); }
+    .included-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; }
+    .included-item { background: var(--paper); padding: 28px 24px; }
+    .included-item h4 { font-family: var(--font-display); font-size: 19px; font-weight: 400; margin-bottom: 6px; }
+    .included-item p { font-size: 13px; font-weight: 300; color: var(--slate); line-height: 1.65; }
+
+    /* OPTIONALS */
+    .optionals { background: var(--paper); padding: 80px 40px; }
+    .optionals-list { margin-top: 40px; max-width: 700px; display: flex; flex-direction: column; gap: 12px; }
+    .optional-item { font-size: 15px; font-weight: 300; color: var(--slate); padding-left: 20px; position: relative; line-height: 1.6; }
+    .optional-item::before { content: '+'; position: absolute; left: 0; color: var(--accent); font-weight: 500; }
+
+    /* NOT INCLUDED */
+    .not-included-section { background: var(--paper); padding: 60px 40px; }
+    .not-included-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 32px; }
+    .not-included-item { background: var(--paper); padding: 28px 24px; border-bottom: 1px solid var(--stone); }
+    .not-included-item h4 { font-family: var(--font-display); font-size: 19px; font-weight: 400; margin-bottom: 6px; color: var(--slate); }
+    .not-included-item p { font-size: 13px; font-weight: 300; color: var(--slate); line-height: 1.6; opacity: .8; }
+
+    /* FOOTER */
+    footer { padding: 40px; text-align: center; font-size: 12px; color: var(--mist); letter-spacing: 1px; }
+    footer a { color: var(--slate); text-decoration: none; }
+
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .8s ease, transform .8s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media(max-width: 768px) {
+      nav { padding: 16px 20px; }
+      nav .nav-links { gap: 16px; }
+      nav .nav-links a { font-size: 10px; }
+      section { padding: 60px 20px; }
+      .hero { padding: 0 20px 60px; }
+      .hero-meta { gap: 20px; }
+      .chapter-grid { grid-template-columns: 1fr; }
+      .day-item { grid-template-columns: 1fr; gap: 8px; }
+      .day-num { position: static; }
+      .day-tech-row { gap: 16px; }
+      .route-data { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .route-profile { padding: 60px 20px; }
+      .included-grid { grid-template-columns: 1fr; }
+      .not-included-grid { grid-template-columns: 1fr; }
+      .optionals { padding: 60px 20px; }
+      .pricing { padding: 60px 20px; }
+      .price-details { gap: 24px; }
+      .img-break { height: 50vh; }
+      .other-routes-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="https://aoitravels.com" class="brand">aoitravels.com</a>
+    <div class="nav-links">
+      <a href="#journey">El Viaje</a>
+      <a href="#ruta">Ruta</a>
+      <a href="#itinerary">Itinerario</a>
+      <a href="#included">Incluido</a>
+      <a href="#request">Reservar</a>
+    </div>
+  </nav>
+
+  <section class="hero" id="top">
+    <div class="hero-img"></div>
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-label">AOI Signature Journeys · 2027</div>
+      <h1>Japan Bike<br><em>Signature Journey</em></h1>
+      <p class="hero-sub">De Tokio al Mar de Japón sobre gravel. A través del corazón rural de Kansai, los cedros del norte de Kyoto y el Japón que no se ve desde el tren.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><span class="label">Duración</span><span class="value">12 Días</span></div>
+        <div class="hero-meta-item"><span class="label">Regiones</span><span class="value">Tokio · Kyoto · Miyama · Costa</span></div>
+        <div class="hero-meta-item"><span class="label">En Bici</span><span class="value">~150 km en gravel</span></div>
+        <div class="hero-meta-item"><span class="label">Nivel</span><span class="value">Intermedio</span></div>
+        <div class="hero-meta-item"><span class="label">Grupo Máximo</span><span class="value">10 Personas</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-band">
+    <div class="stat-item"><div class="stat-number">12</div><div class="stat-label">Días</div></div>
+    <div class="stat-item"><div class="stat-number">~150</div><div class="stat-label">km<br>en Gravel</div></div>
+    <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Regiones<br>Recorridas</div></div>
+    <div class="stat-item"><div class="stat-number">1</div><div class="stat-label">Mar de<br>Japón</div></div>
+    <div class="stat-item"><div class="stat-number">2</div><div class="stat-label">Noches en<br>Ryokan</div></div>
+  </div>
+
+  <section class="chapters" id="journey">
+    <div class="section-label fade-in">El Viaje</div>
+    <h2 class="section-title fade-in">Cuatro Capítulos,<br>Un Arco Completo</h2>
+    <p class="section-body fade-in">El viaje empieza en el caos de Tokio y termina en la mesa de una izakaya en Osaka. En el medio, la bici lleva desde los canales de Kyoto hasta los tejados de kayabuki de Miyama, y desde los cedros del norte hasta el Mar de Japón. Un Japón que no existe desde la ventana del tren.</p>
+    <div class="chapter-grid fade-in">
+      <div class="chapter-card">
+        <div class="chapter-num">Capítulo I · Días 1–3</div>
+        <div class="chapter-region">Tokio</div>
+        <div class="chapter-kanji">東京</div>
+        <p class="chapter-desc">Llegada. El primer Japón es urbano, rápido, sin escala. Dos días para absorber el ritmo antes de que todo cambie. El Shinkansen como transición.</p>
+        <div class="chapter-tags"><span>llegada</span><span>ciudad</span><span>shinkansen</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Capítulo II · Días 4–5</div>
+        <div class="chapter-region">Kyoto en Bici</div>
+        <div class="chapter-kanji">京都</div>
+        <p class="chapter-desc">La ciudad a otra velocidad. Canales del este, el río Kamo al amanecer, los barrios que el turismo no llega a pie. La bici aparece y ya no se va.</p>
+        <div class="chapter-tags"><span>gravel urbano</span><span>cultura</span><span>templos</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Capítulo III · Días 6–9</div>
+        <div class="chapter-region">La Montaña y Miyama</div>
+        <div class="chapter-kanji">北山 · 美山</div>
+        <p class="chapter-desc">El corazón del viaje. Kurama, los cedros, el silencio que no esperabas. Después Miyama — aldea de kayabuki, niebla matutina y el Japón rural que casi no existe.</p>
+        <div class="chapter-tags"><span>kurama</span><span>cedros</span><span>miyama</span><span>kayabuki</span><span>ryokan</span></div>
+      </div>
+      <div class="chapter-card">
+        <div class="chapter-num">Capítulo IV · Días 10–12</div>
+        <div class="chapter-region">El Mar y Osaka</div>
+        <div class="chapter-kanji">天橋立 · 大阪</div>
+        <p class="chapter-desc">El descenso al Mar de Japón. Amanohashidate como llegada y recompensa. Después, el tren a Osaka — el cierre ruidoso, caluroso y perfecto para un viaje así.</p>
+        <div class="chapter-tags"><span>costa</span><span>amanohashidate</span><span>osaka</span><span>despedida</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="img-break">
+    <div class="img-break-bg" style="background-image:url('images/kayabukij.jpg'); background-color:#4a5a3a;"></div>
+    <div class="img-break-overlay"></div>
+    <div class="img-break-caption">
+      <div class="cap-title">Kayabuki no Sato</div>
+      <div class="cap-sub">美山町 Miyama · Norte de Kyoto</div>
+    </div>
+  </div>
+
+  <section class="route-profile" id="ruta">
+    <div class="section-label fade-in">Perfil de Ruta</div>
+    <h2 class="section-title fade-in">Kyoto → Norte → Miyama<br>→ Río Yura → Amanohashidate</h2>
+    <p class="section-body fade-in">Cinco días de pedalada a través del norte de Kyoto. La ruta sale de la ciudad, sube por Kurama hacia las montañas del norte, atraviesa los valles de Miyama y desciende por el río Yura hasta la costa del Mar de Japón. Carreteras secundarias, tráfico mínimo, desnivel moderado.</p>
+
+    <div class="route-svg-wrap fade-in">
+      <svg viewBox="0 0 1000 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <linearGradient id="elevFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(196,149,106,0.18)"/>
+            <stop offset="100%" stop-color="rgba(196,149,106,0.0)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Baseline -->
+        <line x1="60" y1="210" x2="960" y2="210" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
+
+        <!-- Horizontal grid lines -->
+        <line x1="60" y1="160" x2="960" y2="160" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="3,6"/>
+        <line x1="60" y1="110" x2="960" y2="110" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="3,6"/>
+        <line x1="60" y1="60"  x2="960" y2="60"  stroke="rgba(255,255,255,0.05)" stroke-width="0.5" stroke-dasharray="3,6"/>
+
+        <!-- Elevation labels left -->
+        <text x="50" y="214" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="end" letter-spacing="0.5">0</text>
+        <text x="50" y="164" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="end" letter-spacing="0.5">200</text>
+        <text x="50" y="114" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="end" letter-spacing="0.5">400</text>
+        <text x="50" y="64"  fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="end" letter-spacing="0.5">600m</text>
+
+        <!-- Elevation fill area -->
+        <path d="M 60,210 C 100,208 150,204 200,196 C 250,188 290,168 330,138 C 360,114 378,88 400,78 C 418,70 432,72 452,82 C 475,95 492,120 515,148 C 535,170 552,188 580,192 C 610,196 635,182 660,172 C 685,163 705,158 730,162 C 755,166 780,178 810,190 C 840,200 880,206 920,208 C 940,209 955,209 960,210 L 960,210 L 60,210 Z"
+          fill="url(#elevFill)"/>
+
+        <!-- Elevation profile line -->
+        <path d="M 60,210 C 100,208 150,204 200,196 C 250,188 290,168 330,138 C 360,114 378,88 400,78 C 418,70 432,72 452,82 C 475,95 492,120 515,148 C 535,170 552,188 580,192 C 610,196 635,182 660,172 C 685,163 705,158 730,162 C 755,166 780,178 810,190 C 840,200 880,206 920,208 C 940,209 955,209 960,210"
+          fill="none" stroke="#c4956a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+
+        <!-- Stage vertical dividers -->
+        <line x1="240" y1="40" x2="240" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="2,5"/>
+        <line x1="455" y1="40" x2="455" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="2,5"/>
+        <line x1="650" y1="40" x2="650" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="2,5"/>
+        <line x1="840" y1="40" x2="840" y2="220" stroke="rgba(255,255,255,0.06)" stroke-width="0.5" stroke-dasharray="2,5"/>
+
+        <!-- Node dots on profile -->
+        <circle cx="60"  cy="210" r="3" fill="#c4956a" opacity="0.9"/>
+        <circle cx="400" cy="78"  r="3.5" fill="#c4956a"/>
+        <circle cx="515" cy="148" r="3.5" fill="#c4956a"/>
+        <circle cx="730" cy="162" r="3" fill="rgba(74,107,122,0.9)"/>
+        <circle cx="960" cy="210" r="3" fill="#c4956a" opacity="0.7"/>
+
+        <!-- Hanase Pass annotation -->
+        <line x1="400" y1="78" x2="400" y2="58" stroke="rgba(196,149,106,0.3)" stroke-width="0.5"/>
+        <text x="400" y="52" fill="rgba(196,149,106,0.7)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="0.8">Hanase Pass · 750m</text>
+
+        <!-- Place labels -->
+        <text x="60"  y="235" fill="rgba(255,255,255,0.7)" font-size="10" font-family="Cormorant Garamond,Georgia,serif" text-anchor="middle" font-style="italic">Kyoto</text>
+        <text x="400" y="235" fill="rgba(255,255,255,0.7)" font-size="10" font-family="Cormorant Garamond,Georgia,serif" text-anchor="middle" font-style="italic">Kurama</text>
+        <text x="515" y="235" fill="#c4956a" font-size="10" font-family="Cormorant Garamond,Georgia,serif" text-anchor="middle" font-style="italic">Miyama</text>
+        <text x="730" y="235" fill="rgba(255,255,255,0.5)" font-size="10" font-family="Cormorant Garamond,Georgia,serif" text-anchor="middle" font-style="italic">Río Yura</text>
+        <text x="960" y="235" fill="rgba(255,255,255,0.7)" font-size="10" font-family="Cormorant Garamond,Georgia,serif" text-anchor="middle" font-style="italic">Amanohashidate</text>
+
+        <!-- Kanji labels -->
+        <text x="60"  y="248" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="1">京都</text>
+        <text x="400" y="248" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="1">鞍馬</text>
+        <text x="515" y="248" fill="rgba(196,149,106,0.35)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="1">美山</text>
+        <text x="730" y="248" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="1">由良川</text>
+        <text x="960" y="248" fill="rgba(255,255,255,0.2)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="1">天橋立</text>
+
+        <!-- Stage distance annotations -->
+        <text x="148" y="198" fill="rgba(255,255,255,0.25)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="0.5">45 km · +400m</text>
+        <text x="348" y="130" fill="rgba(255,255,255,0.25)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="0.5">40 km</text>
+        <text x="590" y="185" fill="rgba(255,255,255,0.25)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="0.5">45 km · −450m</text>
+        <text x="860" y="202" fill="rgba(255,255,255,0.25)" font-size="8" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="0.5">10 km</text>
+
+        <!-- Total label -->
+        <text x="510" y="270" fill="rgba(196,149,106,0.45)" font-size="9" font-family="DM Sans,sans-serif" text-anchor="middle" letter-spacing="2">~150 KM · 5 JORNADAS · ~2.500m D+</text>
+
+      </svg>
+    </div>
+
+    <div class="route-data fade-in">
+      <div class="route-item">
+        <div class="route-label">Distancia total</div>
+        <div class="route-value">~150 km</div>
+        <div class="route-note">5 jornadas · ~30 km media</div>
+      </div>
+      <div class="route-item">
+        <div class="route-label">Desnivel acumulado</div>
+        <div class="route-value">~2.500 m</div>
+        <div class="route-note">Subida total en todo el recorrido</div>
+      </div>
+      <div class="route-item">
+        <div class="route-label">Climb más duro</div>
+        <div class="route-value">Hanase Pass</div>
+        <div class="route-note">花背峠 · 6,3 km · 8% medio · 12% máx · Cat. 1</div>
+      </div>
+      <div class="route-item">
+        <div class="route-label">Distancia media jornada</div>
+        <div class="route-value">~30 km</div>
+        <div class="route-note">20 km ciudad · 45 km montaña</div>
+      </div>
+      <div class="route-item">
+        <div class="route-label">Nivel requerido</div>
+        <div class="route-value">Intermedio</div>
+        <div class="route-note">Buena forma física para los pasos de montaña</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="img-break">
+    <div class="img-break-bg" style="background-image:url('images/kuramaj.jpg'); background-color:#3a4a30;"></div>
+    <div class="img-break-overlay"></div>
+    <div class="img-break-caption">
+      <div class="cap-title">Paso por el Norte</div>
+      <div class="cap-sub">鞍馬 Kurama · Norte de Kyoto</div>
+    </div>
+  </div>
+
+  <section class="itinerary" id="itinerary">
+    <div class="section-label fade-in">Itinerario</div>
+    <h2 class="section-title fade-in">12 Días,<br>Día a Día</h2>
+    <div class="day-list">
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 1</div>
+          <div class="day-region">Tokio</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Llegada a Tokio — El Primer Japón</h3>
+          <p class="day-body">Llegada al aeropuerto de Narita o Haneda. Traslado al hotel en el centro. El primer contacto con el ruido, la escala y la precisión japonesa. Cena de bienvenida con el grupo.</p>
+          <div class="day-tags"><span class="tag-city">llegada</span><span class="tag-culture">cena bienvenida</span></div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 2</div>
+          <div class="day-region">Tokio</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Tokio — Ciudad sin Escala</h3>
+          <p class="day-body">Día completo en Tokio con guía cultural privado. Shibuya, Yanaka, Tsukiji o el barrio que el grupo prefiera. La bici todavía no existe — hoy Tokio se recorre a pie, en metro, sin plan fijo.</p>
+          <div class="day-tags"><span class="tag-city">ciudad</span><span class="tag-culture">guía privado</span></div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 3</div>
+          <div class="day-region">Tokio → Kyoto</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Shinkansen — La Gran Transición</h3>
+          <p class="day-body">Tren bala de Tokio a Kyoto. Dos horas y media que cruzan el país de punta a punta. Llegada a Kyoto por la tarde, check-in, primera impresión de la ciudad. Las bicis esperan para mañana.</p>
+          <div class="day-tags"><span class="tag-transfer">shinkansen</span><span class="tag-city">kyoto</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Tren</span><span class="tech-value">Shinkansen Nozomi</span></div>
+              <div class="day-tech-item"><span class="tech-label">Duración</span><span class="tech-value">~2h 20min</span></div>
+              <div class="day-tech-item"><span class="tech-label">Clase</span><span class="tech-value">Green Car</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 4</div>
+          <div class="day-region">Kyoto</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Kyoto en Bici — Los Canales del Este</h3>
+          <p class="day-body">Primera jornada sobre la gravel. El río Kamo al amanecer, los callejones de Gion antes de que lleguen los grupos, los canales de Fushimi. Kyoto a una velocidad que el turismo normal no conoce. Tarde libre.</p>
+          <div class="day-tags"><span class="tag-ride">pedalada urbana</span><span class="tag-culture">gion · fushimi</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~25 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Desnivel</span><span class="tech-value">mínimo</span></div>
+              <div class="day-tech-item"><span class="tech-label">Ritmo</span><span class="tech-value">tranquilo</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 5</div>
+          <div class="day-region">Kyoto</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Kyoto — Arashiyama y el Oeste</h3>
+          <p class="day-body">Segunda jornada en Kyoto, ahora hacia el oeste. Arashiyama, el bambú, el río Ōi. Los templos que se recorren mejor pedaleando entre ellos que a pie. Último día de ciudad antes de que el paisaje cambie.</p>
+          <div class="day-tags"><span class="tag-ride">pedalada</span><span class="tag-culture">arashiyama</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~20 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Desnivel</span><span class="tech-value">suave</span></div>
+              <div class="day-tech-item"><span class="tech-label">Noche</span><span class="tech-value">Kyoto</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 6</div>
+          <div class="day-region">Kyoto → Norte</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Kurama — El Primer Ascenso</h3>
+          <p class="day-body">La ciudad queda atrás. La ruta sube hacia Kurama por el norte — cedros, carretera estrecha, el sonido del río. El primer esfuerzo real del viaje. Arriba, templo y silencio. Bajada y noche en alojamiento rural.</p>
+          <div class="day-tags"><span class="tag-ride">ascenso</span><span class="tag-culture">kurama</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~20 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Desnivel +</span><span class="tech-value">~400m</span></div>
+              <div class="day-tech-item"><span class="tech-label">Noche</span><span class="tech-value">Norte de Kyoto</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 7</div>
+          <div class="day-region">Norte → Miyama</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Hacia Miyama — El Valle Se Abre</h3>
+          <p class="day-body">Jornada de transición por carreteras secundarias entre campos de arroz y aldeas sin nombre. El paisaje cambia — menos ciudad, más Japón profundo. Llegada a Miyama al atardecer. Los primeros tejados de paja.</p>
+          <div class="day-tags"><span class="tag-ride">pedalada rural</span><span class="tag-rest">miyama</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~40 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Desnivel</span><span class="tech-value">moderado</span></div>
+              <div class="day-tech-item"><span class="tech-label">Noche</span><span class="tech-value">Miyama · Ryokan</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 8</div>
+          <div class="day-region">Miyama</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Miyama — El Centro Silencioso</h3>
+          <p class="day-body">Día completo en Miyama. Kayabuki no Sato, las granjas, la niebla de la mañana. Sin prisa y sin itinerario fijo. El punto más remoto del viaje y también el más quieto. Kaiseki por la noche.</p>
+          <div class="day-tags"><span class="tag-rest">descanso</span><span class="tag-culture">kayabuki · kaiseki</span></div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 9</div>
+          <div class="day-region">Miyama → Costa</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">El Descenso — El Río Yura al Mar</h3>
+          <p class="day-body">La jornada más larga del viaje. La ruta desciende siguiendo el río Yura desde las montañas hasta la costa del Mar de Japón. El horizonte aparece por primera vez. El mar se huele antes de verse.</p>
+          <div class="day-tags"><span class="tag-ride">descenso</span><span class="tag-coast">mar de japón</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~45 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Desnivel −</span><span class="tech-value">~450m</span></div>
+              <div class="day-tech-item"><span class="tech-label">Noche</span><span class="tech-value">Costa · Amanohashidate</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 10</div>
+          <div class="day-region">Amanohashidate</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Amanohashidate — El Puente al Cielo</h3>
+          <p class="day-body">Mañana en la costa. Amanohashidate, el banco de arena de 3,6 km entre pinos, el mar a los dos lados. Una última pedalada suave como recompensa de todo el recorrido. Tarde libre junto al agua.</p>
+          <div class="day-tags"><span class="tag-ride">pedalada costera</span><span class="tag-coast">amanohashidate</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Distancia</span><span class="tech-value">~10 km</span></div>
+              <div class="day-tech-item"><span class="tech-label">Terreno</span><span class="tech-value">banco de arena · pinos</span></div>
+              <div class="day-tech-item"><span class="tech-label">Noche</span><span class="tech-value">Amanohashidate</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 11</div>
+          <div class="day-region">Costa → Osaka</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Osaka — El Último Sabor</h3>
+          <p class="day-body">Del Mar de Japón a Dotonbori en un solo día. Tren desde la costa, llegada a la ciudad más golosa de Japón. Takoyaki, ramen, izakaya — Osaka no pide permiso para seducir. La última noche del viaje tiene el sabor exacto que merece.</p>
+          <div class="day-tags"><span class="tag-transfer">tren</span><span class="tag-city">osaka</span><span class="tag-culture">cena despedida</span></div>
+          <div class="day-tech">
+            <div class="day-tech-row">
+              <div class="day-tech-item"><span class="tech-label">Tren</span><span class="tech-value">Amanohashidate → Osaka</span></div>
+              <div class="day-tech-item"><span class="tech-label">Duración</span><span class="tech-value">~2.5h</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="day-item fade-in">
+        <div class="day-num-col">
+          <div class="day-num">Día 12</div>
+          <div class="day-region">Salida</div>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Salida desde Kansai</h3>
+          <p class="day-body">Mañana libre para últimas compras o desayuno sin prisa. Traslado al aeropuerto de Kansai disponible como servicio opcional.</p>
+          <div class="day-tags"><span class="tag-transfer">partida</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="img-break">
+    <div class="img-break-bg" style="background-image:url('images/amanoj.jpg'); background-color:#4a6b7a;"></div>
+    <div class="img-break-overlay"></div>
+    <div class="img-break-caption">
+      <div class="cap-title">El Puente al Cielo</div>
+      <div class="cap-sub">天橋立 Amanohashidate · Mar de Japón</div>
+    </div>
+  </div>
+
+  <section class="pricing fade-in" id="request">
+    <div class="section-label">Inversión</div>
+    <div class="price-main">Consultar Precio</div>
+    <div class="price-per">por persona · base habitación doble · sujeto a cupo</div>
+    <a href="https://wa.me/34624923462?text=Hola%2C%20me%20interesa%20el%20Japan%20Bike%20Journey" class="price-btn" target="_blank">Reservar Mi Lugar</a>
+    <div class="price-details">
+      <div class="price-detail-item"><div class="pd-label">Grupo Máximo</div><div class="pd-value">10 personas</div></div>
+      <div class="price-detail-item"><div class="pd-label">Nivel requerido</div><div class="pd-value">Intermedio</div></div>
+      <div class="price-detail-item"><div class="pd-label">Bici incluida</div><div class="pd-value">Gravel · proporcionada</div></div>
+    </div>
+  </section>
+
+  <section class="included" id="included">
+    <div class="section-label fade-in">Incluido</div>
+    <h2 class="section-title fade-in">Todo, Considerado</h2>
+    <div class="included-grid fade-in">
+      <div class="included-item"><h4>Bicicleta Gravel</h4><p>Gravel de calidad proporcionada por AOI para toda la ruta. Fitting previo incluido. Opción de e-bike bajo consulta.</p></div>
+      <div class="included-item"><h4>Guía Ciclista</h4><p>Guía acompañante durante todos los días de pedalada. Conocimiento de la ruta, ritmo del grupo y asistencia técnica en caso de necesidad.</p></div>
+      <div class="included-item"><h4>Guía Cultural Privada</h4><p>Acompañamiento cultural en Tokio, Kyoto y Miyama. Contexto discreto y reflexivo para los días sin bici.</p></div>
+      <div class="included-item"><h4>Alojamiento Completo</h4><p>Hoteles en Tokio y Kyoto, alojamiento rural en el norte, ryokan con onsen en Miyama y Amanohashidate. Cada noche elegida por coherencia con la etapa.</p></div>
+      <div class="included-item"><h4>Shinkansen Green Car</h4><p>Tokio–Kyoto en Green Car. Todo el transporte en destino incluido. La logística no existe para el viajero.</p></div>
+      <div class="included-item"><h4>Cenas de Bienvenida y Despedida</h4><p>Apertura en Tokio y cierre en Osaka. Los dos momentos que enmarcan el viaje.</p></div>
+      <div class="included-item"><h4>Ryokan & Onsen</h4><p>Dos noches en ryokan — Miyama y Amanohashidate. Kaiseki, aguas termales y el ritmo lento que el viaje merece al final del día.</p></div>
+      <div class="included-item"><h4>Envío de Equipaje</h4><p>Servicio de takuhaibin entre ciudades. La mochila pequeña en la bici, el equipaje grande esperando en el destino.</p></div>
+      <div class="included-item"><h4>Asistencia AOI</h4><p>Presencia y soporte 24h durante todo el viaje. Precisión, continuidad y respuesta en cada momento.</p></div>
+    </div>
+  </section>
+
+  <section class="optionals">
+    <div class="section-label fade-in">Adiciones Opcionales</div>
+    <h2 class="section-title fade-in">A Medida</h2>
+    <div class="optionals-list fade-in">
+      <div class="optional-item">Traslados privados aeropuerto ↔ hotel</div>
+      <div class="optional-item">Upgrade a bicicleta eléctrica</div>
+      <div class="optional-item">Extensión de días en Miyama o Amanohashidate</div>
+      <div class="optional-item">Encuentro Spirit of the Hanamachi en Kyoto</div>
+      <div class="optional-item">Experiencias gastronómicas privadas</div>
+      <div class="optional-item">Versión privada del viaje — fechas y grupo a elección</div>
+    </div>
+  </section>
+
+  <section class="not-included-section">
+    <div class="section-label fade-in">No Incluido</div>
+    <div class="not-included-grid fade-in">
+      <div class="not-included-item"><h4>Vuelos Internacionales</h4><p>Vuelos hacia/desde Japón.</p></div>
+      <div class="not-included-item"><h4>Comidas No Indicadas</h4><p>Almuerzos y cenas no especificadas en el itinerario.</p></div>
+      <div class="not-included-item"><h4>Bebidas Alcohólicas</h4><p>Bebidas durante comidas y fuera de ellas.</p></div>
+      <div class="not-included-item"><h4>Seguro de Viaje</h4><p>Seguro personal y cobertura médica internacional.</p></div>
+      <div class="not-included-item"><h4>Gastos Personales</h4><p>Compras, propinas y gastos de índole personal.</p></div>
+      <div class="not-included-item"><h4>Equipo Personal de Ciclismo</h4><p>Casco, ropa técnica y accesorios personales.</p></div>
+    </div>
+  </section>
+
+  <div class="other-routes-grid fade-in" style="display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;text-align:left">
+    <div style="background:var(--snow);padding:48px 40px;border-top:3px solid var(--accent)">
+      <div class="section-label">Otras Rutas</div>
+      <h3 style="font-family:var(--font-display);font-size:26px;font-weight:300;margin-bottom:12px">Más Recorridos en Japón</h3>
+      <p style="font-size:14px;font-weight:300;color:var(--slate);line-height:1.7;max-width:400px">Contamos con otros recorridos a pie, en bici y en tren por distintas regiones de Japón. Consultá por rutas disponibles o diseñamos una a medida.</p>
+      <a href="https://wa.me/34624923462?text=Hola%2C%20me%20interesan%20otros%20recorridos%20en%20Japón" target="_blank" style="display:inline-block;margin-top:20px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px">Consultar Rutas →</a>
+    </div>
+    <div style="background:var(--snow);padding:48px 40px;border-top:3px solid var(--forest)">
+      <div class="section-label">Versión Privada</div>
+      <h3 style="font-family:var(--font-display);font-size:26px;font-weight:300;margin-bottom:12px">Tu Viaje, Tu Ritmo</h3>
+      <p style="font-size:14px;font-weight:300;color:var(--slate);line-height:1.7;max-width:400px">Este mismo recorrido en versión privada — fechas a elección, grupo propio, y opciones Premium o Luxury con servicios y alojamientos elevados.</p>
+      <a href="https://wa.me/34624923462?text=Hola%2C%20me%20interesa%20la%20versión%20privada%20del%20Bike%20Journey" target="_blank" style="display:inline-block;margin-top:20px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--forest);text-decoration:none;border-bottom:1px solid var(--forest);padding-bottom:2px">Consultar Versión Privada →</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>AOI Signature Journeys</p>
+    <p style="margin-top:8px"><a href="https://aoitravels.com">aoitravels.com</a> · Kyoto · Estepona</p>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+    const faders = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver(e => {
+      e.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    faders.forEach(f => observer.observe(f));
+  </script>
+</body>
+</html>
