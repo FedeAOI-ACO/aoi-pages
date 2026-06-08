@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Alpine Journey — AOI Travels</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e8dcc8;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-link {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+    .map-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .hint {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #3b2a1a;
+      opacity: 0;
+      animation: hintPulse 4s ease 2s infinite;
+      pointer-events: none;
+    }
+    @keyframes hintPulse {
+      0% { opacity: 0; }
+      15% { opacity: 0.5; }
+      85% { opacity: 0.5; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <a href="journey.html" class="map-link">
+    <img src="images/maphikejapan.png" alt="Mapa del recorrido">
+  </a>
+  <span class="hint">Click para continuar</span>
+</body>
+</html>
