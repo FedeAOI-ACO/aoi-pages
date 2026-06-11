@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Bike Journey — AOI Travels</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e8dcc8;
+    }
+
+    /* IFRAME — landing underneath */
+    iframe.landing {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      z-index: 0;
+    }
+
+    /* MAP OVERLAY */
+    .map-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 4.8s ease;
+    }
+
+    .map-overlay.fading {
+      opacity: 0;
+    }
+
+    img.map-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    /* HINT */
+    .hint {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #3b2a1a;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 11;
+      animation: fadeInPulse 3s ease 2s infinite;
+    }
+
+    .hint.hidden {
+      animation: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    @keyframes fadeInPulse {
+      0%   { opacity: 0; }
+      20%  { opacity: 0.7; }
+      60%  { opacity: 0.7; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Landing loaded underneath -->
+  <iframe class="landing" src="journey.html"></iframe>
+
+  <!-- Map overlay -->
+  <div class="map-overlay" id="overlay">
+    <img class="map-img" src="images/maparide.png" alt="Mapa del recorrido — Japan Bike Journey">
+  </div>
+
+  <!-- Hint -->
+  <span class="hint" id="hint">Click para continuar</span>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const hint = document.getElementById('hint');
+
+    function triggerFade() {
+      overlay.classList.add('fading');
+      hint.classList.add('hidden');
+      setTimeout(() => {
+        overlay.remove();
+        hint.remove();
+      }, 5200);
+    }
+
+    // Click triggers fade
+    overlay.addEventListener('click', triggerFade);
+
+    // Auto-fade at 4.5s
+    setTimeout(triggerFade, 4500);
+  </script>
+
+</body>
+</html>
