@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOI · Japan Golf & Cultural Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; background: #e8dcc8; }
+  .journey-frame {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 0;
+  }
+  .map-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: #e8dcc8;
+    cursor: pointer;
+    transition: opacity 1.2s ease;
+  }
+  .map-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .map-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+  }
+  .hint {
+    position: fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: #3b2a1a;
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: hintAppear 0.8s ease 2s forwards, hintPulse 2.5s ease-in-out 2.8s infinite;
+    pointer-events: none;
+    z-index: 20;
+  }
+  .map-overlay.fade-out ~ .hint { opacity: 0 !important; animation: none; }
+  @keyframes hintAppear {
+    from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+    to { opacity: 0.6; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes hintPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.25; }
+  }
+</style>
+</head>
+<body>
+<iframe class="journey-frame" src="journey.html"></iframe>
+<div class="map-overlay" id="mapOverlay" onclick="revealJourney()">
+  <img src="./images/mapagolf.png" alt="Japan Golf Journey Map">
+</div>
+<div class="hint" id="hint">Click para continuar</div>
+<script>
+  function revealJourney() {
+    document.getElementById('mapOverlay').classList.add('fade-out');
+    document.getElementById('hint').style.opacity = '0';
+    document.body.style.overflow = 'auto';
+    setTimeout(function() {
+      document.getElementById('mapOverlay').remove();
+      document.getElementById('hint').remove();
+      var iframe = document.querySelector('.journey-frame');
+      iframe.style.position = 'relative';
+      document.body.style.overflow = 'hidden';
+    }, 1300);
+  }
+  // Auto-fade after 4.5 seconds
+  setTimeout(revealJourney, 4500);
+</script>
+</body>
+</html>
