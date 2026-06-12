@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japón por primera vez — AOI Travels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f7f3ed;
+    --forest: #1e2820;
+    --snow: #fdfcfa;
+    --gold: #b08d6a;
+    --gold-light: #c9aa88;
+    --forest-light: #4a5a4c;
+    --muted: #8a9688;
+    --ash: #e8eae6;
+    --border: rgba(30,40,32,0.09);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--forest);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 0 3rem;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.35s ease, background 0.4s, border-color 0.4s, height 0.3s;
+  }
+  nav.hidden { transform: translateY(-100%); }
+  nav.scrolled {
+    background: rgba(247,243,237,0.97);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--snow);
+    text-decoration: none;
+    transition: color 0.3s;
+    flex-shrink: 0;
+  }
+  nav.scrolled .nav-logo { color: var(--forest); }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-links li a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.65);
+    text-decoration: none;
+    padding: 0 1.1rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .nav-links li a:hover {
+    color: var(--snow);
+    border-bottom-color: var(--gold);
+  }
+  nav.scrolled .nav-links li a { color: rgba(44,58,46,0.55); }
+  nav.scrolled .nav-links li a:hover {
+    color: var(--forest);
+    border-bottom-color: var(--gold);
+  }
+
+  .nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.65);
+    text-decoration: none;
+    padding: 0 1.1rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid transparent;
+    margin-left: 0.5rem;
+    transition: color 0.3s, border-color 0.3s;
+    white-space: nowrap;
+  }
+  nav.scrolled .nav-cta { color: rgba(44,58,46,0.55); }
+  .nav-cta:hover {
+    color: var(--snow);
+    border-bottom-color: var(--gold);
+  }
+  nav.scrolled .nav-cta:hover {
+    color: var(--forest);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 101;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 100%;
+    height: 1.5px;
+    background: var(--snow);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s;
+  }
+  nav.scrolled .nav-hamburger span { background: var(--forest); }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* mobile dropdown */
+  .nav-mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px; left: 0; right: 0;
+    background: rgba(247,243,237,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+    padding: 1rem 0;
+    transform: translateY(-8px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .nav-mobile-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+  .nav-mobile-menu a {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--forest);
+    text-decoration: none;
+    padding: 0.9rem 2rem;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+  }
+  .nav-mobile-menu a:last-child { border-bottom: none; }
+  .nav-mobile-menu a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1800&q=85');
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(1.05);
+    transition: transform 8s ease-out;
+  }
+  .hero-bg.loaded { transform: scale(1); }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(18,24,19,0.88) 0%,
+      rgba(18,24,19,0.45) 45%,
+      rgba(18,24,19,0.1) 100%
+    );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 3rem 5rem;
+    max-width: 960px;
+  }
+  .hero-firma {
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.45);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.65s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.8rem, 9vw, 7.5rem);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--snow);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+
+  .hero-sub {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: rgba(250,250,248,0.72);
+    max-width: 460px;
+    margin-bottom: 2.5rem;
+    line-height: 1.85;
+    opacity: 0;
+    animation: fadeUp 1s 0.7s forwards;
+  }
+
+  .hero-bullets {
+    list-style: none;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.78s forwards;
+  }
+  .hero-bullets li {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(250,250,248,0.65);
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    line-height: 1.5;
+  }
+  .hero-bullets li::before {
+    content: '—';
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .hero-meta {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.85s forwards;
+  }
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-right: 2rem;
+    margin-right: 2rem;
+    border-right: 1px solid rgba(250,250,248,0.15);
+  }
+  .hero-meta-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+  .hero-meta-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--snow);
+    line-height: 1;
+  }
+  .hero-meta-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.45);
+  }
+  .hero-meta-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--snow);
+    line-height: 1.2;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--snow);
+    background: var(--gold);
+    padding: 0.9rem 2.2rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s 1.5s forwards;
+    z-index: 2;
+  }
+  .scroll-indicator span {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.35);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: rgba(250,250,248,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%; left: 0;
+    width: 100%; height: 100%;
+    background: var(--gold);
+    animation: scrollDown 2s 2s infinite;
+  }
+
+  /* ── SECTIONS BASE ── */
+  section { padding: 7rem 3rem; }
+  .section-label {
+    font-size: 0.63rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .intro {
+    background: var(--snow);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .intro-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--forest);
+    margin-bottom: 2rem;
+  }
+  .intro-text h2 em { font-style: italic; color: var(--gold); }
+  .intro-text p {
+    font-size: 0.98rem;
+    color: var(--forest-light);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+  .intro-image {
+    position: relative;
+    height: 520px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .intro-image img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 6s ease;
+  }
+  .intro-image:hover img { transform: scale(1.04); }
+  .intro-image-caption {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem;
+    font-size: 0.63rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.65);
+  }
+
+  /* ── STATS ── */
+  .stats-strip {
+    background: var(--forest);
+    padding: 3rem;
+    display: flex;
+    justify-content: center;
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0 3.5rem;
+    border-right: 1px solid rgba(250,250,248,0.1);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(250,250,248,0.4);
+  }
+
+  /* ── ITINERARIO ── */
+  .itinerario { background: var(--cream); }
+  .itinerario-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .itinerario-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--forest);
+    margin-bottom: 1rem;
+  }
+  .itinerario-header p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .destino-grid {
+    display: flex;
+    flex-direction: column;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .destino-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    border-top: 1px solid var(--border);
+    padding: 2.8rem 0;
+    transition: all 0.3s;
+  }
+  .destino-item:last-child { border-bottom: 1px solid var(--border); }
+
+  .destino-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-right: 2rem;
+    padding-top: 0.3rem;
+  }
+  .destino-dias {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: var(--gold);
+    font-weight: 400;
+    letter-spacing: 0.05em;
+  }
+  .destino-fechas {
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-top: 0.2rem;
+  }
+  .destino-duracion {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(44,58,46,0.4);
+    margin-top: 0.4rem;
+    line-height: 1.6;
+  }
+
+  .destino-ciudad {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 400;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .destino-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .destino-desc {
+    font-size: 0.88rem;
+    color: var(--forest-light);
+    line-height: 1.85;
+    max-width: 560px;
+  }
+  .destino-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1rem;
+  }
+  .highlight-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--forest-light);
+    border: 1px solid var(--border);
+    padding: 0.28rem 0.75rem;
+    border-radius: 20px;
+  }
+
+  /* ── CÓMO VIAJAMOS ── */
+  .como { background: var(--ash); }
+  .como-header { margin-bottom: 4rem; }
+  .como-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--forest);
+  }
+  .como-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem 5rem;
+  }
+  .como-item {}
+  .como-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+  .como-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .como-item p {
+    font-size: 0.88rem;
+    color: var(--forest-light);
+    line-height: 1.85;
+  }
+
+  /* ── FULL IMAGE ── */
+  .full-image {
+    height: 60vh;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+  .full-image img { width: 100%; height: 100%; object-fit: cover; }
+  .full-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(18,24,19,0.38);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .full-image-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--snow);
+    text-align: center;
+    max-width: 700px;
+    padding: 0 2rem;
+    line-height: 1.3;
+  }
+
+  /* ── INCLUYE ── */
+  .incluye {
+    background: var(--snow);
+    padding: 7rem 3rem;
+  }
+  .incluye-inner {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .incluye h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--forest);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .no-incluye {
+    margin-top: 4rem;
+    padding-top: 4rem;
+    border-top: 1px solid var(--border);
+  }
+  .incluye-list { list-style: none; }
+  .incluye-list li {
+    font-size: 0.88rem;
+    color: var(--forest-light);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    line-height: 1.65;
+  }
+  .incluye-list li strong {
+    display: block;
+    font-weight: 500;
+    color: var(--forest);
+    margin-bottom: 0.2rem;
+    font-size: 0.88rem;
+  }
+  .incluye-list li::before {
+    content: '';
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 0.65rem;
+    flex-shrink: 0;
+  }
+  .no-incluye .incluye-list li::before { background: var(--muted); }
+
+  /* ── PRECIO ── */
+  .precio {
+    background: var(--cream);
+    text-align: center;
+    padding: 7rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .precio-eyebrow {
+    font-size: 0.63rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .precio-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 300;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .precio-per {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .precio-note {
+    font-size: 0.85rem;
+    color: var(--forest-light);
+    max-width: 400px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+  .precio-details {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 3.5rem;
+  }
+  .precio-detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .precio-detail-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .precio-detail-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .precio-sep {
+    width: 1px;
+    background: var(--border);
+    align-self: stretch;
+  }
+
+  /* ── CUPO ── */
+  .cupo {
+    background: var(--cream);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    padding: 4rem 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .cupo-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    text-align: center;
+  }
+  .cupo-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--forest);
+    line-height: 1;
+  }
+  .cupo-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cupo-sep {
+    width: 1px;
+    height: 48px;
+    background: var(--border);
+  }
+  .cupo-aviso {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cupo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+
+  /* ── RESERVAR ── */
+  .reservar {
+    background: var(--snow);
+    text-align: center;
+    padding: 8rem 3rem;
+  }
+  .reservar h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--forest);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+  .reservar h2 em { font-style: italic; color: var(--gold); }
+  .reservar p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    max-width: 420px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--snow);
+    background: var(--forest);
+    padding: 1.1rem 2.5rem;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .btn-whatsapp:hover { background: var(--gold); transform: translateY(-3px); }
+  .btn-whatsapp svg { width: 18px; height: 18px; fill: currentColor; }
+  .reservar-note {
+    margin-top: 1.5rem;
+    font-size: 0.76rem;
+    color: rgba(44,58,46,0.38);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--forest);
+    padding: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-brand { display: flex; flex-direction: column; gap: 0.3rem; }
+  .footer-name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--snow);
+  }
+  .footer-url {
+    font-size: 0.7rem;
+    color: rgba(250,250,248,0.32);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-url:hover { color: var(--gold); }
+  .footer-copy { font-size: 0.66rem; color: rgba(250,250,248,0.22); letter-spacing: 0.08em; }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: rgba(250,250,248,0.28);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes scrollDown {
+    0%   { top: -100%; }
+    100% { top: 100%; }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-mobile-menu { display: block; }
+    section { padding: 5rem 1.5rem; }
+    .hero-content { padding: 0 1.5rem 4rem; }
+    .hero-meta { flex-wrap: wrap; gap: 1.2rem; }
+    .hero-meta-item { border-right: none; }
+    .intro { grid-template-columns: 1fr; gap: 2.5rem; }
+    .intro-image { height: 300px; }
+    .stats-strip { flex-wrap: wrap; gap: 2rem; padding: 2.5rem 1.5rem; }
+    .stat-item { border-right: none; padding: 0 1.5rem; }
+    .destino-item { grid-template-columns: 90px 1fr; }
+    .como-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .incluye { grid-template-columns: 1fr; gap: 3rem; }
+    .precio-details { gap: 1.5rem; flex-wrap: wrap; }
+    .cupo { flex-wrap: wrap; gap: 2rem; }
+    .cupo-sep { display: none; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="https://aoitravels.com" class="nav-logo">AOI Travels</a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#viaje">Viaje</a></li>
+      <li><a href="#itinerario">Itinerario</a></li>
+      <li><a href="#incluido">Incluido</a></li>
+      <li><a href="#precio">Inversión</a></li>
+    </ul>
+    <a href="https://wa.me/34624923462" class="nav-cta">Reservar mi lugar</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="#viaje" class="mobile-link">Viaje</a>
+  <a href="#itinerario" class="mobile-link">Itinerario</a>
+  <a href="#incluido" class="mobile-link">Incluido</a>
+  <a href="#precio" class="mobile-link">Inversión</a>
+  <a href="https://wa.me/34624923462" class="mobile-link">Reservar mi lugar</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Japón<br><em>por primera vez</em></h1>
+    <p class="hero-firma">AOI Signature Journeys · 19 Nov 2026</p>
+    <p class="hero-sub">Un recorrido diseñado para quienes visitan Japón por primera vez — con contexto, ritmo cuidado y acompañamiento de principio a fin.</p>
+    <ul class="hero-bullets">
+      <li>Los destinos que todos conocen, vividos como casi nadie los vive</li>
+      <li>Dentro del templo, no en la foto del templo</li>
+      <li>Un guía que traduce el país, no solo el idioma</li>
+      <li>Ritmo, contexto y acceso — las tres cosas que lo cambian todo</li>
+      <li>Máximo 12 personas · El mismo guía durante todo el recorrido</li>
+    </ul>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">12</span>
+        <span class="hero-meta-label">Noches</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">6</span>
+        <span class="hero-meta-label">Destinos</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">8–12</span>
+        <span class="hero-meta-label">Personas</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-date">19 Nov<br>2026</span>
+        <span class="hero-meta-label">Salida</span>
+      </div>
+    </div>
+    <a href="https://wa.me/34624923462" class="btn-primary">Reservar mi lugar</a>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="intro" id="viaje">
+  <div class="intro-text reveal">
+    <span class="section-label">El viaje</span>
+    <h2>Hay países que se visitan.<br>Japón se <em>experimenta</em>.</h2>
+    <p>La primera vez que llegas a Tokyo y sientes que el caos tiene una lógica perfecta que no entiendes pero respetas. La primera vez que un tren bala atraviesa el campo y el Monte Fuji aparece entre nubes como una visión. La primera vez que la mañana en Kōya-san huele a incienso y el silencio entre cedros centenarios pesa de una manera que no esperabas.</p>
+    <p>Este viaje está diseñado para que nada de eso te pille desprevenido — y para que todo te siga sorprendiendo igual.</p>
+    <p>La diferencia está en los detalles: entramos a Fushimi Inari cuando el sol aún no calienta y los torii se tiñen de naranja sin nadie alrededor. Dormimos en el templo de Kōya-san, no en el hotel del valle. Cruzamos a Miyajima en el último ferry del día. Viajamos en grupos de máximo 12, con un guía que conoce Japón por dentro y que está ahí para traducir no solo el idioma, sino el país.</p>
+  </div>
+  <div class="intro-image reveal reveal-delay-2">
+    <img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=900&q=85" alt="Kioto, Japón">
+    <span class="intro-image-caption">Kioto · Japón</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat-item reveal">
+    <span class="stat-num">7</span>
+    <span class="stat-label">Ciudades y paradas</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-1">
+    <span class="stat-num">12</span>
+    <span class="stat-label">Noches incluidas</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-2">
+    <span class="stat-num">8–12</span>
+    <span class="stat-label">Lugares disponibles</span>
+  </div>
+  <div class="stat-item reveal reveal-delay-3">
+    <span class="stat-num">1</span>
+    <span class="stat-label">Guía AOI todo el viaje</span>
+  </div>
+</div>
+
+<!-- ITINERARIO -->
+<section class="itinerario" id="itinerario">
+  <div class="itinerario-header reveal">
+    <span class="section-label">Día a día</span>
+    <h2>El recorrido</h2>
+    <p>Tokyo · Fuji · Kioto · Kōya-san · Himeji · Hiroshima · Osaka<br>19 de noviembre – 1 de diciembre 2026</p>
+  </div>
+
+  <div class="destino-grid">
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Días 1 – 4</span>
+        <span class="destino-fechas">Jue 19 Nov<br>Dom 22 Nov</span>
+        <span class="destino-duracion">Cuatro<br>días</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Tokyo</h3>
+        <p class="destino-tagline">La capital en capas: tradición, diseño y gastronomía en una misma calle</p>
+        <p class="destino-desc">Empezamos en la ciudad más poblada del mundo, que paradójicamente se siente como la más ordenada. Asakusa y sus templos, Yanaka y sus callejuelas antiguas, el mercado de Tsukiji al amanecer, la energía de Shinjuku por la noche. Cuatro días para entender que Tokyo no tiene un centro — tiene capas.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Asakusa</span>
+          <span class="highlight-tag">Tsukiji</span>
+          <span class="highlight-tag">Yanaka</span>
+          <span class="highlight-tag">Shinjuku</span>
+          <span class="highlight-tag">Harajuku</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Día 5</span>
+        <span class="destino-fechas">Lun 23 Nov</span>
+        <span class="destino-duracion">Una<br>noche</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Monte Fuji</h3>
+        <p class="destino-tagline">La montaña sagrada, sin intermediarios</p>
+        <p class="destino-desc">No como fondo de foto desde el Shinkansen. De cerca, desde la región de Fuji-Hakone, con tiempo suficiente para que la montaña te mire a los ojos. Una noche en ryokan tradicional con baños termales mirando al volcán más famoso del mundo.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Hakone</span>
+          <span class="highlight-tag">Onsen</span>
+          <span class="highlight-tag">Ryokan</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Días 6 – 8</span>
+        <span class="destino-fechas">Mar 24 Nov<br>Jue 26 Nov</span>
+        <span class="destino-duracion">Tres<br>días</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Kioto</h3>
+        <p class="destino-tagline">Templos, jardines y el ritmo silencioso de la antigua capital</p>
+        <p class="destino-desc">La ciudad donde Japón decidió guardar su memoria. Fushimi Inari al amanecer, antes de que lleguen los grupos. El bambú de Arashiyama a primera hora. El barrio de Gion al caer la tarde, con sus callejuelas de piedra. Kioto requiere paciencia, y nosotros le damos el tiempo que merece.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Fushimi Inari</span>
+          <span class="highlight-tag">Arashiyama</span>
+          <span class="highlight-tag">Gion</span>
+          <span class="highlight-tag">Ceremonia de té</span>
+          <span class="highlight-tag">Nishiki</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Día 9</span>
+        <span class="destino-fechas">Vie 27 Nov</span>
+        <span class="destino-duracion">Una<br>noche</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Kōya-san</h3>
+        <p class="destino-tagline">El momento que no esperabas</p>
+        <p class="destino-desc">A 900 metros de altitud, en lo alto de una montaña rodeada de cedros milenarios, existe una ciudad monástica budista que lleva funcionando desde el siglo IX. Dormimos en un templo, cenamos con los monjes y despertamos con sus cánticos. Kōya-san es el corazón espiritual del viaje.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Monasterio</span>
+          <span class="highlight-tag">Okunoin</span>
+          <span class="highlight-tag">Shojin ryori</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Día 10</span>
+        <span class="destino-fechas">Sáb 28 Nov</span>
+        <span class="destino-duracion">Media<br>mañana</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Himeji</h3>
+        <p class="destino-tagline">El castillo samurái más imponente de Japón, en el camino hacia el sur</p>
+        <p class="destino-desc">En ruta entre Kōya-san e Hiroshima, una parada imprescindible: el Castillo Blanco de Himeji, declarado Patrimonio de la Humanidad y el mejor conservado de todo Japón. Una hora y media que vale el desvío.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Castillo de Himeji</span>
+          <span class="highlight-tag">UNESCO</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Día 11</span>
+        <span class="destino-fechas">Dom 29 Nov</span>
+        <span class="destino-duracion">Un<br>día</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Hiroshima</h3>
+        <p class="destino-tagline">Memoria, resiliencia y la belleza sagrada de Miyajima</p>
+        <p class="destino-desc">Mañana en el Parque del Memorial de la Paz — uno de los lugares más conmovedores del mundo, que se visita en silencio y se piensa durante semanas. Por la tarde, ferry hasta la isla de Miyajima y el torii flotante de Itsukushima al atardecer. El equilibrio perfecto entre peso y ligereza.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Memorial de la Paz</span>
+          <span class="highlight-tag">Miyajima</span>
+          <span class="highlight-tag">Itsukushima</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="destino-item reveal">
+      <div class="destino-left">
+        <span class="destino-dias">Días 12 – 13</span>
+        <span class="destino-fechas">Lun 30 Nov<br>Mar 1 Dic</span>
+        <span class="destino-duracion">Dos<br>días</span>
+      </div>
+      <div class="destino-right">
+        <h3 class="destino-ciudad">Osaka</h3>
+        <p class="destino-tagline">El antídoto perfecto para tanta contemplación</p>
+        <p class="destino-desc">Osaka vive de noche, come todo el día y no se disculpa por nada. Dotonbori, el mercado de Kuromon, takoyaki en la calle, clase de cocina local, el caos encantador de Shinsekai. El cierre más vivo que podríamos imaginar para un viaje de esta intensidad.</p>
+        <div class="destino-highlights">
+          <span class="highlight-tag">Dotonbori</span>
+          <span class="highlight-tag">Kuromon</span>
+          <span class="highlight-tag">Shinsekai</span>
+          <span class="highlight-tag">Street food</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRECIO -->
+<section class="precio" id="precio">
+  <span class="precio-eyebrow">Inversión por persona</span>
+  <div class="precio-amount reveal">$4,490</div>
+  <p class="precio-per">USD · por persona en base doble</p>
+  <p class="precio-note">El precio incluye todo lo especificado en el programa. Los vuelos internacionales no están incluidos.</p>
+  <div class="precio-details reveal">
+    <div class="precio-detail">
+      <span class="precio-detail-num">12</span>
+      <span class="precio-detail-label">Noches incluidas</span>
+    </div>
+    <div class="precio-sep"></div>
+    <div class="precio-detail">
+      <span class="precio-detail-num">6</span>
+      <span class="precio-detail-label">Destinos</span>
+    </div>
+    <div class="precio-sep"></div>
+    <div class="precio-detail">
+      <span class="precio-detail-num">8–12</span>
+      <span class="precio-detail-label">Personas</span>
+    </div>
+  </div>
+  <a href="https://wa.me/34624923462" class="btn-primary">Reservar mi lugar</a>
+</section>
+
+<!-- CUPO -->
+<div class="cupo reveal">
+  <div class="cupo-item">
+    <span class="cupo-num">12</span>
+    <span class="cupo-label">Plazas máximo</span>
+  </div>
+  <div class="cupo-sep"></div>
+  <div class="cupo-item">
+    <span class="cupo-num">19 Nov 2026</span>
+    <span class="cupo-label">Fecha de salida</span>
+  </div>
+  <div class="cupo-sep"></div>
+  <div class="cupo-aviso">
+    <span class="cupo-dot"></span>
+    Cupo limitado · Se confirma con señal
+  </div>
+</div>
+
+<!-- CÓMO VIAJAMOS -->
+<section class="como">
+  <div class="como-header reveal">
+    <span class="section-label">La diferencia</span>
+    <h2>Cómo viajamos</h2>
+  </div>
+  <div class="como-grid">
+    <div class="como-item reveal">
+      <span class="como-num">01</span>
+      <h3>Grupo pequeño, experiencia grande</h3>
+      <p>Máximo 12 personas. No es un número arbitrario — es el límite donde todavía podemos entrar al templo antes que los tours, reservar la mesa en el izakaya del barrio y movernos al ritmo de la gente, no de un autobús.</p>
+    </div>
+    <div class="como-item reveal reveal-delay-1">
+      <span class="como-num">02</span>
+      <h3>Un guía AOI durante todo el recorrido</h3>
+      <p>No un guía local que cambia en cada ciudad. El mismo acompañante de principio a fin — alguien que conoce tu nombre, sabe qué te interesa y puede llevarte al ramen que no está en ninguna guía porque lo encontró él mismo hace tres años.</p>
+    </div>
+    <div class="como-item reveal reveal-delay-2">
+      <span class="como-num">03</span>
+      <h3>Alojamiento con criterio</h3>
+      <p>Hoteles boutique en Tokyo, ryokan con onsen mirando al Fuji, noche en un templo monástico en Kōya-san. Cada noche está elegida por lo que añade al viaje, no por el precio por metro cuadrado.</p>
+    </div>
+    <div class="como-item reveal reveal-delay-3">
+      <span class="como-num">04</span>
+      <h3>Ritmo diseñado para la primera vez</h3>
+      <p>Japón puede abrumar. Este itinerario alterna intensidad y calma — días llenos en Tokyo, silencio en Kōya-san, energía pura en Osaka. Llegas con energía a cada destino porque el anterior no te dejó seco.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FULL IMAGE -->
+<div class="full-image">
+  <img src="https://images.unsplash.com/photo-1492571350019-22de08371fd3?w=1800&q=85" alt="Japón">
+  <div class="full-image-overlay">
+    <p class="full-image-quote">Doce noches. Seis destinos.<br>Un país que cambia la forma<br><em>de ver todos los demás.</em></p>
+  </div>
+</div>
+
+<!-- INCLUYE -->
+<section class="incluye" id="incluido">
+  <div class="incluye-inner">
+    <div class="reveal">
+      <span class="section-label">Detalle del viaje</span>
+      <h2>Qué está incluido</h2>
+      <ul class="incluye-list">
+        <li><strong>Alojamiento completo — 12 noches</strong><br>Hoteles boutique en ciudad, ryokan con onsen frente al Fuji y noche en templo monástico en Kōya-san. Cada noche seleccionada por coherencia con la etapa del viaje.</li>
+        <li><strong>Todos los traslados internos</strong><br>Trenes, ferries y transfers entre destinos. Nos encargamos de la logística para que tú solo tengas que mirar por la ventana.</li>
+        <li><strong>IC Card recargada</strong><br>La tarjeta de transporte urbano de Japón, lista desde el primer día para metros, autobuses y trenes locales en todas las ciudades.</li>
+        <li><strong>Guía AOI Travels durante todo el recorrido</strong><br>El mismo acompañante de principio a fin — contexto cultural, logística, recomendaciones y presencia constante para que nada quede sin respuesta.</li>
+        <li><strong>Cenas de bienvenida y despedida</strong><br>El primer y último momento del viaje en mesa compartida — el punto de partida y el cierre que merece.</li>
+        <li><strong>Fushimi Inari al amanecer</strong><br>Visita guiada privada antes de que abra el acceso masivo. Los torii en silencio, sin grupos, con la luz de las seis de la mañana.</li>
+        <li><strong>Noche en templo budista en Kōya-san</strong><br>Alojamiento en shukubo, cena de cocina monástica (shojin ryori) y despertar con los cánticos de los monjes. El momento más inesperado del viaje.</li>
+        <li><strong>Entradas a templos y monumentos</strong><br>Todas las entradas del itinerario incluidas — sin sorpresas ni colas de taquilla.</li>
+        <li><strong>Ceremonia de té privada en Kioto</strong><br>Una sesión íntima en un espacio tradicional, no una demostración turística. Matcha, silencio y el ritual más antiguo de Japón.</li>
+        <li><strong>Clase de cocina en Osaka</strong><br>Takoyaki, okonomiyaki y la filosofía culinaria de la ciudad que más en serio se toma la comida en todo el país.</li>
+      </ul>
+    </div>
+    <div class="no-incluye reveal">
+      <h2>Qué no está incluido</h2>
+      <ul class="incluye-list">
+        <li>Vuelos internacionales de origen y regreso</li>
+        <li>Gastos personales y compras</li>
+        <li>Comidas no especificadas en el programa</li>
+        <li>Propinas (no son habituales en Japón)</li>
+        <li>Visados si aplica según nacionalidad</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="footer-name">AOI Travels</span>
+    <a href="https://aoitravels.com" class="footer-url">aoitravels.com</a>
+  </div>
+  <span class="footer-tagline">Viajes que merecen la pena</span>
+  <span class="footer-copy">© 2026 AOI Travels</span>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const heroBg = document.getElementById('heroBg');
+
+  // ── Parallax hero ──
+  setTimeout(() => heroBg.classList.add('loaded'), 100);
+
+  // ── Nav scroll-aware ──
+  let lastScroll = 0;
+  let menuOpen = false;
+
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+
+    // scrolled class
+    navbar.classList.toggle('scrolled', current > 60);
+
+    // hide/show — solo si el menú está cerrado
+    if (!menuOpen) {
+      if (current > lastScroll && current > 80) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+    }
+
+    lastScroll = current <= 0 ? 0 : current;
+
+    // parallax
+    heroBg.style.transform = `scale(1) translateY(${current * 0.28}px)`;
+  });
+
+  // ── Hamburger ──
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    hamburger.classList.toggle('open', menuOpen);
+    mobileMenu.classList.toggle('open', menuOpen);
+    if (menuOpen) navbar.classList.remove('hidden');
+  });
+
+  // cerrar al click en link
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      menuOpen = false;
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
