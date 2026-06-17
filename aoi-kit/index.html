@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOI Signature Journeys — Kit para Agencias</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cinzel:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #dfc07a;
+    --ink: #0d0d0d;
+    --ink-soft: #1c1c1c;
+    --cream: #f7f4ee;
+    --cream-dark: #eee9df;
+    --stone: #7a7060;
+    --stone-light: #b0a898;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--ink-soft);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://raw.githubusercontent.com/FedeAOI-ACO/aoi-pages/main/aoi-kit/images/japankit.jpeg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.35;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(13,13,13,0.4) 0%, rgba(13,13,13,0.55) 60%, rgba(13,13,13,0.85) 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-ornament { width: 1px; height: 60px; background: var(--gold); margin: 0 auto 40px; opacity: 0.7; animation: fadeDown 1.2s ease forwards; }
+  .hero-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; margin-bottom: 28px; opacity: 0; animation: fadeUp 1s ease 0.3s forwards; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(48px, 8vw, 96px); line-height: 1.0; color: var(--cream); margin-bottom: 12px; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-sub { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; font-style: italic; color: var(--stone-light); margin-bottom: 20px; opacity: 0; animation: fadeUp 1s ease 0.7s forwards; }
+  .hero-medida { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 40px; opacity: 0; animation: fadeUp 1s ease 0.85s forwards; }
+  .hero-divider { display: flex; align-items: center; gap: 20px; margin-bottom: 40px; opacity: 0; animation: fadeUp 1s ease 0.9s forwards; }
+  .hero-divider::before, .hero-divider::after { content: ''; width: 80px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .hero-divider span { font-family: 'Cinzel', serif; font-size: 10px; color: var(--gold); letter-spacing: 0.3em; }
+  .hero-desc { max-width: 560px; color: var(--stone-light); letter-spacing: 0.05em; line-height: 2; font-size: 13px; opacity: 0; animation: fadeUp 1s ease 1.1s forwards; }
+  .hero-badge { position: absolute; bottom: 40px; right: 40px; font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; color: rgba(176,168,152,0.6); text-transform: uppercase; z-index: 2; }
+
+  /* SECTIONS */
+  .section-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 16px; }
+  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--gold); opacity: 0.5; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: clamp(36px, 5vw, 58px); line-height: 1.1; margin-bottom: 24px; }
+  .section-title em { font-style: italic; color: var(--stone); }
+
+  /* DIFERENCIADORES */
+  .diferenciadores { background: var(--ink-soft); color: var(--cream); padding: 100px 40px; }
+  .diferenciadores-inner { max-width: 1100px; margin: 0 auto; }
+  .diferenciadores .section-title { color: var(--cream); margin-bottom: 60px; }
+  .dif-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px; }
+  .dif-item { border-top: 1px solid rgba(201,168,76,0.3); padding-top: 28px; }
+  .dif-number { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: rgba(201,168,76,0.2); line-height: 1; margin-bottom: 12px; }
+  .dif-title { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.25em; color: var(--gold); margin-bottom: 12px; text-transform: uppercase; }
+  .dif-text { font-size: 13px; color: var(--stone-light); line-height: 1.9; }
+
+  /* PRODUCTOS */
+  .productos-wrap { background: var(--cream-dark); padding: 100px 40px; }
+  .productos-inner { max-width: 1100px; margin: 0 auto; }
+  .destino-grupo { margin-bottom: 4px; }
+  .destino-header { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.45em; color: var(--gold); text-transform: uppercase; padding: 20px 0 12px; border-bottom: 1px solid rgba(201,168,76,0.25); margin-bottom: 2px; }
+  .productos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--stone-light); }
+  .producto-card { background: var(--cream); padding: 44px 36px; position: relative; overflow: hidden; transition: background 0.3s ease; display: flex; flex-direction: column; }
+  .producto-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+  .producto-card:hover::before { transform: scaleX(1); }
+  .producto-card:hover { background: #fff; }
+  .producto-nombre { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; line-height: 1.15; margin-bottom: 6px; color: var(--ink); }
+  .producto-nombre em { font-style: italic; color: var(--stone); }
+  .producto-zona { font-size: 11px; color: var(--stone-light); letter-spacing: 0.1em; margin-bottom: 8px; font-style: italic; }
+  .producto-duracion { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 24px; }
+  .producto-divider { width: 36px; height: 1px; background: var(--gold); opacity: 0.5; margin-bottom: 24px; }
+  .producto-incluye { list-style: none; margin-bottom: 32px; flex: 1; }
+  .producto-incluye li { font-size: 11.5px; color: var(--stone); padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+  .producto-incluye li::before { content: '—'; color: var(--gold); font-size: 9px; flex-shrink: 0; margin-top: 3px; }
+  .producto-precio { margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.07); }
+  .precio-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.3em; color: var(--stone-light); text-transform: uppercase; margin-bottom: 4px; }
+  .precio-valor { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 500; color: var(--ink); }
+  .precio-valor span { font-size: 14px; color: var(--stone); }
+  .precio-nota { font-size: 10px; color: var(--stone-light); margin-top: 4px; font-style: italic; }
+
+  /* SEPARADOR VISUAL ARGENTINA */
+  .separador-visual {
+    height: 480px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--ink);
+  }
+
+  .separador-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://raw.githubusercontent.com/FedeAOI-ACO/aoi-pages/main/aoi-kit/images/peritokit.jpeg');
+    background-size: cover;
+    background-position: center 40%;
+    opacity: 0.55;
+    transition: transform 0.1s ease;
+  }
+
+  .separador-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(13,13,13,0.7) 0%, rgba(13,13,13,0.2) 50%, rgba(13,13,13,0.6) 100%);
+  }
+
+  .separador-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 80px;
+    max-width: 600px;
+  }
+
+  .separador-label { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.4em; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+  .separador-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 5vw, 68px); font-weight: 300; color: var(--cream); line-height: 1.05; }
+  .separador-title em { font-style: italic; color: var(--gold-light); }
+  .separador-line { width: 48px; height: 1px; background: var(--gold); opacity: 0.6; margin-top: 28px; }
+
+
+  .precio-niveles {
+    display: flex;
+    gap: 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding-bottom: 14px;
+    min-height: 30px;
+  }
+  .precio-nivel {
+    flex: 1;
+    text-align: center;
+    padding: 0 8px;
+    border-right: 1px solid rgba(0,0,0,0.06);
+  }
+  .precio-nivel:last-child { border-right: none; }
+  .precio-nivel-label {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .precio-nivel-valor {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+
+  .precio-desde-label {
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 0.2em;
+    color: var(--stone);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    min-height: 18px;
+    display: flex;
+    align-items: center;
+  }
+  .grupos-wrap {
+    background: var(--cream-dark);
+    padding: 32px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+  .grupos-inner { max-width: 1100px; margin: 0 auto; }
+  .grupos-texto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--stone);
+  }
+  .grupos-texto a { color: var(--gold); text-decoration: none; }
+
+
+
+  .precio-grupo-frase {
+    font-size: 10.5px;
+    color: var(--stone-light);
+    margin-top: 10px;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .precio-grupo {
+    font-size: 11px;
+    color: var(--stone);
+    margin-top: 8px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .precio-grupo strong {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--ink);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .precio-grupo-spacer {
+    margin-top: 8px;
+    height: 17px;
+  }
+
+
+  .grupo-cta-wrap {
+    background: var(--cream-dark);
+    padding: 36px 40px;
+    text-align: center;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+  .grupo-cta-inner { max-width: 1100px; margin: 0 auto; }
+  .grupo-cta-texto {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--stone);
+  }
+  .grupo-cta-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(201,168,76,0.4);
+    padding-bottom: 1px;
+    transition: border-color 0.3s ease;
+  }
+  .grupo-cta-link:hover { border-color: var(--gold); }
+
+  /* PROCESO */
+  .proceso-wrap { padding: 100px 40px; max-width: 1100px; margin: 0 auto; }
+  .proceso-steps { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 60px; position: relative; }
+  .proceso-steps::before { content: ''; position: absolute; top: 27px; left: 12%; right: 12%; height: 1px; background: var(--gold); opacity: 0.2; }
+  .paso { text-align: center; padding: 0 20px; }
+  .paso-num { width: 56px; height: 56px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--gold); background: var(--cream); position: relative; z-index: 1; }
+  .paso-titulo { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.25em; color: var(--ink); text-transform: uppercase; margin-bottom: 12px; }
+  .paso-desc { font-size: 12px; color: var(--stone); line-height: 1.8; }
+
+  /* CONDICIONES */
+  .condiciones-wrap { background: var(--ink-soft); padding: 100px 40px; }
+  .condiciones-inner { max-width: 1100px; margin: 0 auto; }
+  .condiciones-inner .section-title { color: var(--cream); margin-bottom: 60px; }
+  .cond-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2px; background: rgba(255,255,255,0.05); }
+  .cond-bloque { padding: 40px 36px; background: rgba(255,255,255,0.03); border-top: 1px solid rgba(201,168,76,0.2); transition: background 0.3s ease; }
+  .cond-bloque:hover { background: rgba(255,255,255,0.06); }
+  .cond-titulo { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-bottom: 16px; }
+  .cond-texto { font-size: 13px; color: var(--stone-light); line-height: 1.9; }
+  .cond-texto strong { color: var(--cream); font-weight: 500; }
+
+  /* CIERRE */
+  .cierre-wrap {
+    background: var(--ink-soft);
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cierre-wrap::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 80%, rgba(201,168,76,0.07) 0%, transparent 60%); }
+  .cierre-inner { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+  .cierre-ornament { width: 1px; height: 48px; background: var(--gold); margin: 0 auto 40px; opacity: 0.5; }
+  .cierre-wrap .section-title { color: var(--cream); margin-bottom: 16px; }
+  .cierre-desc { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--stone-light); margin-bottom: 16px; line-height: 1.7; }
+  .cierre-sub { font-size: 12px; color: var(--stone); letter-spacing: 0.08em; margin-bottom: 56px; }
+  .cierre-contactos { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; margin-bottom: 56px; }
+  .cierre-contacto-item { text-align: center; }
+  .cierre-contacto-label { font-family: 'Cinzel', serif; font-size: 8px; letter-spacing: 0.35em; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+  .cierre-contacto-value { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--cream); }
+  .cierre-divider { width: 48px; height: 1px; background: var(--gold); opacity: 0.3; margin: 0 auto 56px; }
+
+  .btn { display: inline-block; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; padding: 18px 48px; text-decoration: none; transition: all 0.3s ease; margin: 8px; cursor: pointer; }
+  .btn-solid { background: var(--gold); color: var(--ink); }
+  .btn-solid:hover { background: var(--cream); color: var(--ink); }
+  .btn-outline { background: transparent; border: 1px solid rgba(201,168,76,0.5); color: var(--cream); }
+  .btn-outline:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+
+  /* FOOTER */
+  footer { background: var(--ink); padding: 48px 40px; text-align: center; }
+  .footer-logo { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 0.4em; color: var(--gold); margin-bottom: 8px; }
+  .footer-sub { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--stone); font-size: 14px; margin-bottom: 24px; }
+  .footer-note { font-size: 10px; color: var(--stone); letter-spacing: 0.1em; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 0.7; transform: translateY(0); } }
+
+  @media (max-width: 900px) {
+    .productos-grid { grid-template-columns: 1fr; }
+    .proceso-steps { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+    .proceso-steps::before { display: none; }
+    .separador-content { padding: 0 40px; }
+  }
+  @media (max-width: 600px) {
+    .diferenciadores, .productos-wrap, .condiciones-wrap, .cierre-wrap { padding: 70px 24px; }
+    .proceso-wrap { padding: 70px 24px; }
+    .hero { padding: 60px 24px; }
+    .hero-badge { display: none; }
+    .cierre-contactos { flex-direction: column; gap: 28px; }
+    .proceso-steps { grid-template-columns: 1fr; }
+    .separador-visual { height: 360px; }
+    .separador-content { padding: 0 28px; }
+  }
+  /* LOGIN SCREEN */
+  .login-screen {
+    min-height: 100vh;
+    background: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .login-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 60%);
+  }
+  .login-box {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 380px;
+    width: 100%;
+  }
+  .login-ornament {
+    width: 1px;
+    height: 48px;
+    background: var(--gold);
+    margin: 0 auto 32px;
+    opacity: 0.6;
+  }
+  .login-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .login-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--stone-light);
+    margin-bottom: 40px;
+  }
+  .login-input {
+    width: 100%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+  }
+  .login-input:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  .login-input::placeholder { color: var(--stone); }
+  .login-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .login-btn:hover {
+    background: var(--cream);
+  }
+  .login-error {
+    display: none;
+    color: #c97a7a;
+    font-size: 12px;
+    margin-top: 18px;
+    font-style: italic;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- PANTALLA DE ACCESO -->
+<div id="login-screen" class="login-screen">
+  <div class="login-box">
+    <div class="login-ornament"></div>
+    <p class="login-logo">AOI SIGNATURE JOURNEYS</p>
+    <p class="login-sub">Acceso para agencias colaboradoras</p>
+    <form id="login-form" autocomplete="off">
+      <input type="password" id="login-password" class="login-input" placeholder="Contraseña" autocomplete="off">
+      <button type="submit" class="login-btn">Ingresar</button>
+    </form>
+    <p id="login-error" class="login-error">Contraseña incorrecta. Intentá de nuevo.</p>
+  </div>
+</div>
+
+<div id="kit-content" style="display:none;">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-ornament"></div>
+    <p class="hero-label">Kit para Agencias Colaboradoras · 2026 - 2027</p>
+    <h1>AOI <em>Signature</em><br>Journeys</h1>
+    <p class="hero-sub">Operador boutique de lujo en Japón, Argentina y Europa</p>
+    <p class="hero-medida">CADA VIAJE, DISEÑADO DESDE CERO</p>
+    <div class="hero-divider"><span>◆</span></div>
+    <p class="hero-desc">Diseñamos y operamos experiencias de viaje de lujo absolutamente a medida. Con presencia en Japón, Argentina y Europa, acompañamos cada viaje desde la propuesta hasta el regreso.</p>
+  </div>
+  <div class="hero-badge">Documento confidencial · Solo para agencias colaboradoras</div>
+</div>
+
+<!-- DIFERENCIADORES -->
+<div class="diferenciadores">
+  <div class="diferenciadores-inner">
+    <p class="section-label">Por qué AOI</p>
+    <h2 class="section-title">Lo que nos <em>distingue</em></h2>
+    <div class="dif-grid">
+      <div class="dif-item">
+        <div class="dif-number">01</div>
+        <div class="dif-title">Presencia local</div>
+        <p class="dif-text">Equipo propio en Japón, Argentina y Europa. Operamos con conocimiento directo del destino en cada uno de los mercados en que trabajamos.</p>
+      </div>
+      <div class="dif-item">
+        <div class="dif-number">02</div>
+        <div class="dif-title">Guías privados</div>
+        <p class="dif-text">Cada viaje cuenta con guías privados seleccionados. Acceso a experiencias que las mayoristas simplemente no pueden ofrecer.</p>
+      </div>
+      <div class="dif-item">
+        <div class="dif-number">03</div>
+        <div class="dif-title">Asistencia 24/7</div>
+        <p class="dif-text">Seguimiento cercano antes, durante y después del viaje. Tu cliente nunca está solo — ni vos como agencia. Respuesta real, en cualquier momento.</p>
+      </div>
+      <div class="dif-item">
+        <div class="dif-number">04</div>
+        <div class="dif-title">Cotización en 5 días</div>
+        <p class="dif-text">Cada propuesta se diseña desde cero para el perfil exacto del cliente. Cotización personalizada en un máximo de 5 días hábiles.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTOS JAPÓN -->
+<div class="productos-wrap">
+  <div class="productos-inner">
+    <p class="section-label">Nuestros productos</p>
+    <h2 class="section-title">Dos destinos.<br><em>Seis experiencias.</em></h2>
+    <div class="destino-grupo" style="margin-top:60px">
+      <p class="destino-header">Japón</p>
+      <div class="productos-grid">
+        <div class="producto-card">
+          <h3 class="producto-nombre">Cultural<br><em>& Clásico</em></h3>
+          <p class="producto-zona">Tokyo · Kyoto · Osaka · Nara · Hiroshima</p>
+          <p class="producto-duracion">11 días · 10 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Alojamiento desde hoteles boutique hasta ryokan icónicos, según la experiencia que el viajero elija</li>
+            <li>Guía privado en español, presencia adaptada al nivel contratado</li>
+            <li>Traslados privados y Shinkansen incluidos</li>
+            <li>Acceso a experiencias culturales exclusivas según la experiencia que el viajero elija</li>
+            <li>Extensiones a medida según intereses</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 3.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 6.900</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 11.300</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo">Ejemplo en grupo de 8 pax (Base): <strong>USD 2.700</strong> / pax</p>
+          </div>
+        </div>
+        <div class="producto-card">
+          <h3 class="producto-nombre">Golf<br><em>& Cultura</em></h3>
+          <p class="producto-zona">Tokyo · Fuji · Kyoto · Nara · Osaka</p>
+          <p class="producto-duracion">12 días · 11 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Campos premium: Kawana, Taiheiyo Club y selección según perfil</li>
+            <li>Alojamiento desde resorts de golf hasta hoteles icónicos, según la experiencia que el viajero elija</li>
+            <li>Coordinación completa de tee times y equipamiento</li>
+            <li>Rondas en campos junto al Monte Fuji y el océano</li>
+            <li>Guía privado bilingüe con experiencia en golf</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 4.800</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 7.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 14.700</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo-spacer"></p>
+          </div>
+        </div>
+        <div class="producto-card">
+          <h3 class="producto-nombre">Activo<br><em>& Natural</em></h3>
+          <p class="producto-zona">Entre montañas, a pie y en bicicleta</p>
+          <p class="producto-duracion">12 días · 11 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Senderismo y ciclismo en rutas históricas y paisajes volcánicos</li>
+            <li>Alojamiento desde hoteles boutique hasta ryokan con onsen privado, según la experiencia que el viajero elija</li>
+            <li>Guía privado naturalista especializado</li>
+            <li>Intensidad y ritmo adaptados a cada viajero</li>
+            <li>Combinable con tramos culturales a medida</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 4.200</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 6.800</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 12.900</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo-spacer"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grupo-cta-wrap">
+  <div class="grupo-cta-inner">
+    <p class="grupo-cta-texto">¿Buscás cotización para un grupo? <a href="#contacto" class="grupo-cta-link">Hablemos →</a></p>
+  </div>
+</div>
+
+<!-- SEPARADOR VISUAL ARGENTINA -->
+<div class="separador-visual">
+  <div class="separador-bg"></div>
+  <div class="separador-overlay"></div>
+  <div class="separador-content">
+    <p class="separador-label">Argentina</p>
+    <h2 class="separador-title">La Patagonia.<br>Mendoza.<br><em>Lo extraordinario.</em></h2>
+    <div class="separador-line"></div>
+  </div>
+</div>
+
+<!-- PRODUCTOS ARGENTINA -->
+<div class="productos-wrap" style="padding-top:60px">
+  <div class="productos-inner">
+    <div class="destino-grupo">
+      <div class="productos-grid">
+        <div class="producto-card">
+          <h3 class="producto-nombre">Patagonia<br><em>Clásica</em></h3>
+          <p class="producto-zona">Bariloche · Bolsón · Lago Puelo · Pehuenia</p>
+          <p class="producto-duracion">11 días · 10 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Lagos, bosques de araucarias y volcanes andinos</li>
+            <li>Alojamiento desde cabañas boutique hasta lodges de autor, según la experiencia que el viajero elija</li>
+            <li>Navegaciones, cabalgatas y trekking privado</li>
+            <li>Gastronomía local de productores de la región</li>
+            <li>Guía privado experto en Patagonia</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 4.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 7.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 10.500</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo">Ejemplo en grupo de 8 pax (Base): <strong>USD 3.500</strong> / pax</p>
+          </div>
+        </div>
+        <div class="producto-card">
+          <h3 class="producto-nombre">Patagonia<br><em>Profunda</em></h3>
+          <p class="producto-zona">El Calafate · El Chaltén · Glaciares</p>
+          <p class="producto-duracion">11 días · 10 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Glaciar Perito Moreno, El Chaltén y grandes espacios salvajes</li>
+            <li>Alojamiento en lodges seleccionados, según la experiencia que el viajero elija</li>
+            <li>Trekking, navegación glaciar y actividades privadas</li>
+            <li>Traslados privados y vuelos internos coordinados</li>
+            <li>Combinable con cruce a Torres del Paine</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 5.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 9.000</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 13.000</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo">Ejemplo en grupo de 8 pax (Base): <strong>USD 4.250</strong> / pax</p>
+          </div>
+        </div>
+        <div class="producto-card">
+          <h3 class="producto-nombre">Mendoza<br><em>& Viñas</em></h3>
+          <p class="producto-zona">Mendoza · Valle de Uco · Cordillera</p>
+          <p class="producto-duracion">9 días · 8 noches</p>
+          <div class="producto-divider"></div>
+          <ul class="producto-incluye">
+            <li>Bodegas exclusivas con catas privadas y maridajes</li>
+            <li>Alojamiento desde hoteles boutique hasta lodges de viña premium, según la experiencia que el viajero elija</li>
+            <li>Excursiones a alta montaña y Aconcagua</li>
+            <li>Gastronomía de autor con chefs locales</li>
+            <li>Experiencias enológicas adaptadas a cada viajero</li>
+          </ul>
+          <div class="producto-precio">
+            <p class="precio-desde-label">Precios orientativos · por persona en base doble</p>
+            <div class="precio-niveles">
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Base</p>
+                <p class="precio-nivel-valor">USD 3.500</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Premium</p>
+                <p class="precio-nivel-valor">USD 6.000</p>
+              </div>
+              <div class="precio-nivel">
+                <p class="precio-nivel-label">Luxury</p>
+                <p class="precio-nivel-valor">USD 8.500</p>
+              </div>
+            </div>
+<p class="precio-grupo-frase">El valor por persona se ajusta favorablemente cuanto mayor es el grupo.</p>
+            <p class="precio-grupo-spacer"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grupo-cta-wrap">
+  <div class="grupo-cta-inner">
+    <p class="grupo-cta-texto">¿Buscás cotización para un grupo? <a href="#contacto" class="grupo-cta-link">Hablemos →</a></p>
+  </div>
+</div>
+
+<!-- PROCESO -->
+<div class="proceso-wrap">
+  <p class="section-label">Cómo trabajamos</p>
+  <h2 class="section-title">Un proceso<br><em>sin fricciones</em></h2>
+  <div class="proceso-steps">
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <p class="paso-titulo">Consulta</p>
+      <p class="paso-desc">Nos compartís el perfil del cliente: destino, fechas, número de viajeros y preferencias clave.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <p class="paso-titulo">Propuesta</p>
+      <p class="paso-desc">Diseñamos un itinerario a medida y enviamos cotización en precio neto en 5 días hábiles.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <p class="paso-titulo">Confirmación</p>
+      <p class="paso-desc">Tu agencia confirma y gestiona el pago con el cliente. Nosotros activamos la operación.</p>
+    </div>
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <p class="paso-titulo">Operación</p>
+      <p class="paso-desc">AOI opera sobre el terreno. Tu cliente vive un viaje impecable. Tú, tranquilidad total.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CONDICIONES -->
+<div class="condiciones-wrap">
+  <div class="condiciones-inner">
+    <p class="section-label" style="color:var(--gold)">Condiciones comerciales</p>
+    <h2 class="section-title">Claro.<br><em>Simple.</em><br>Profesional.</h2>
+    <div class="cond-grid">
+      <div class="cond-bloque">
+        <p class="cond-titulo">Precio neto</p>
+        <p class="cond-texto">Trabajamos exclusivamente en <strong>precio neto</strong>. Tú defines el margen que aplicas a tu cliente con total libertad y sin interferencia.</p>
+      </div>
+      <div class="cond-bloque">
+        <p class="cond-titulo">Siempre a medida</p>
+        <p class="cond-texto">No existe un precio fijo. Cada cotización se diseña según el perfil exacto del cliente: <strong>duración, alojamiento, actividades y grupo</strong>.</p>
+      </div>
+      <div class="cond-bloque">
+        <p class="cond-titulo">Visibilidad de marca</p>
+        <p class="cond-texto">Operamos como <strong>AOI Signature Journeys</strong> o como proveedor invisible según lo que mejor se adapte a la relación con tu cliente.</p>
+      </div>
+      <div class="cond-bloque">
+        <p class="cond-titulo">Soporte durante el viaje</p>
+        <p class="cond-texto">Canal directo vía WhatsApp para tu agencia y para el guía en destino. <strong>Asistencia real</strong>, no un call center.</p>
+      </div>
+      <div class="cond-bloque">
+        <p class="cond-titulo">Condiciones por escrito</p>
+        <p class="cond-texto">Pago, cancelaciones y condiciones generales acordadas y firmadas <strong>antes de cada operación</strong>. Sin sorpresas.</p>
+      </div>
+      <div class="cond-bloque">
+        <p class="cond-titulo">Respuesta garantizada</p>
+        <p class="cond-texto">Cotización personalizada en un máximo de <strong>5 días hábiles</strong>. Cada propuesta diseñada específicamente para el perfil del cliente.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="cierre-wrap" id="contacto">
+  <div class="cierre-inner">
+    <div class="cierre-ornament"></div>
+    <p class="section-label" style="justify-content:center">Hablemos</p>
+    <h2 class="section-title">¿Tu cliente tiene<br><em>algo en mente?</em></h2>
+    <p class="cierre-desc">Los 6 productos sugeridos son un punto de partida. Diseñamos cualquier itinerario desde cero — destino, duración, ritmo e intereses del viajero.</p>
+    <p class="cierre-sub">Cuéntanos el perfil y te enviamos una propuesta en 5 días hábiles.</p>
+    <div class="cierre-divider"></div>
+    <div class="cierre-contactos">
+      <div class="cierre-contacto-item">
+        <p class="cierre-contacto-label">WhatsApp</p>
+        <p class="cierre-contacto-value">+34 624 923 462</p>
+      </div>
+      <div class="cierre-contacto-item">
+        <p class="cierre-contacto-label">Email</p>
+        <p class="cierre-contacto-value">info@aoitravels.com</p>
+      </div>
+      <div class="cierre-contacto-item">
+        <p class="cierre-contacto-label">Web</p>
+        <p class="cierre-contacto-value">aoitravels.com</p>
+      </div>
+    </div>
+    <a href="https://wa.me/34624923462" class="btn btn-solid">Consultar por WhatsApp</a>
+    <a href="mailto:info@aoitravels.com" class="btn btn-outline">Enviar email</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-logo">AOI SIGNATURE JOURNEYS</p>
+  <p class="footer-sub">Japón - Europa - Argentina</p>
+  <p class="footer-note">Documento confidencial para uso exclusivo de agencias colaboradoras · © 2026 AOI Signature Journeys</p>
+</footer>
+
+</div>
+
+<script>
+  (function() {
+    var CORRECT_PASSWORD = "Kintsugi26";
+    var STORAGE_KEY = "aoi_kit_access";
+
+    var loginScreen = document.getElementById('login-screen');
+    var kitContent = document.getElementById('kit-content');
+    var loginForm = document.getElementById('login-form');
+    var loginPassword = document.getElementById('login-password');
+    var loginError = document.getElementById('login-error');
+
+    function grantAccess() {
+      loginScreen.style.display = 'none';
+      kitContent.style.display = 'block';
+      try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch(e) {}
+    }
+
+    // Si ya validó en esta sesión, no pedir de nuevo
+    try {
+      if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+        grantAccess();
+      }
+    } catch(e) {}
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (loginPassword.value === CORRECT_PASSWORD) {
+        grantAccess();
+      } else {
+        loginError.style.display = 'block';
+        loginPassword.value = '';
+        loginPassword.focus();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>
